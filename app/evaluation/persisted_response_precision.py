@@ -10,6 +10,20 @@ def evaluate_persisted_response_precision(
     supported_claims: list[str] = []
     unsupported_claims: list[str] = []
 
+    if not Path(log_path).is_file():
+        return ResponsePrecisionResult(
+            supported_claim_count=0,
+            verifiable_claim_count=0,
+            excluded_claim_count=0,
+            precision=0.0,
+            formula="supported claims / verifiable claims",
+            evaluation_basis=(
+                "No persisted semantic-evaluation records are available yet."
+            ),
+            supported_claims=[],
+            unsupported_claims=[],
+            excluded_claims=[],
+        )
     with Path(log_path).open("r", encoding="utf-8") as handle:
         for line in handle:
             if not line.strip():
